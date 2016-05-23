@@ -1,0 +1,109 @@
+<html>
+<head>
+  <title>Amandine</title>
+  <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/stylesheets/custom.css" rel="stylesheet">
+
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.10/angular.min.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.10/angular-ui-router.js"></script>
+  <script src="/javascripts/angularApp.js"></script>
+
+  <style> .glyphicon-thumbs-up { cursor:pointer } </style>
+</head>
+<body ng-app="amandine">
+  <nav class="navbar navbar-inverse" ng-controller="NavCtrl">
+    <ul style="float:right;" class="nav navbar-nav">
+      <li ng-show="isLoggedIn()"><a>{{ currentUser() }}</a></li>
+      <li ng-show="isLoggedIn()"><a href="#/home">Accueil</a></li>
+      <li ng-show="isLoggedIn()"><a href="#/manage" >Gérer</a></li>
+      <li ng-show="isLoggedIn()"><a href="" ng-click="logOut()">Deconnexion</a></li>
+      <li ng-hide="isLoggedIn()"><a href="/#/login">Se connecter</a></li>
+      <li ng-hide="isLoggedIn()"><a href="/#/register">S'enregistrer</a></li>
+    </ul>
+  </nav>
+  <div>
+
+      <ui-view></ui-view>
+
+  </div>
+
+  <script type="text/ng-template" id="/home.html">
+
+    Bienvenue
+    
+  </script>
+    
+    
+<script type="text/ng-template" id="/register.html">
+  <div class="page-header">
+    <h1>Amandine</h1>
+  </div>
+
+  <div ng-show="error" class="alert alert-danger row">
+    <span>{{ error.message }}</span>
+  </div>
+
+  <form ng-submit="register()"
+    style="margin-top:30px;">
+    <h3>Register</h3>
+
+    <div class="form-group">
+      <input type="text"
+      class="form-control"
+      placeholder="Username"
+      ng-model="user.username"></input>
+    </div>
+    <div class="form-group">
+      <input type="password"
+      class="form-control"
+      placeholder="Password"
+      ng-model="user.password"></input>
+    </div>
+    <button type="submit" class="btn btn-primary">Register</button>
+  </form>
+</script>
+    
+    
+<script type="text/ng-template" id="/manage.html">    
+
+ <div class='leftManage' ng-include src="'/views/eleves.ejs'"></div>
+ <div class='rightManage' ng-include src="'/views/skillpaterns.ejs'"></div>
+
+  
+
+
+</script>   
+    
+<script type="text/ng-template" id="/login.html">
+  <div class="page-header">
+    <h1>Flapper News</h1>
+  </div>
+
+  <div ng-show="error" class="alert alert-danger row">
+    <span>{{ error.message }}</span>
+  </div>
+
+  <form ng-submit="logIn()"
+    style="margin-top:30px;">
+    <h3>Log In</h3>
+
+    <div class="form-group">
+      <input type="text"
+      class="form-control"
+      placeholder="Username"
+      ng-model="user.username"></input>
+    </div>
+    <div class="form-group">
+      <input type="password"
+      class="form-control"
+      placeholder="Password"
+      ng-model="user.password"></input>
+    </div>
+    <button type="submit" class="btn btn-primary">Log In</button>
+  </form>
+</script>
+    
+  
+</body>
+
+</html>

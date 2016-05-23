@@ -1,0 +1,100 @@
+    
+   <div  ng-show="isLoggedIn()">
+      <form ng-show="!showModSkillPatern" ng-submit="addSkillPatern()" class="addSkillForm" >
+        <h3>Ajouter une compétence</h3>
+
+        <div class="form-group">
+            <input type="text"
+            class="form-control"
+            placeholder="Intitulé compétence"
+            ng-model="$parent.title"></input>
+        </div>
+         <div style="float:left;" class="form-group formStep">
+            <textarea  
+            class="form-control"
+            placeholder="Première étape"
+            ng-model="$parent.firstStep"></textarea>
+        </div>
+         <div style="float:right;" class="form-group formStep" >
+            <textarea 
+            class="form-control"
+            placeholder="Deuxieme étape"
+            ng-model="$parent.secondStep"></textarea>
+        </div>
+         <div style="float:left;" class="form-group formStep">
+            <textarea  
+            class="form-control"
+            placeholder="Troisième étape"
+            ng-model="$parent.thirdStep"></textarea>
+        </div>
+         <div style="float:right;" class="form-group formStep">
+            <textarea 
+            class="form-control"
+            placeholder="Quatrième étape"
+            ng-model="$parent.fourthStep"></textarea>
+        </div>
+         <button type="submit" class="btn btn-primary">Ajouter</button>
+
+         <button type="button" class="btn btn-danger" ng-show="!showSuprSkillPatern" ng-click="showSuprSkillPatern=true;">Supprimer</button>
+         <button type="button" class="btn btn-info" ng-show="showSuprSkillPatern" ng-click="showSuprSkillPatern=false;">Fin suppression</button>
+       </form>
+       
+       <form ng-show="showModSkillPatern" ng-submit="editSkillPatern($parent.skillToEdit)" class="addSkillForm" >
+        <h3>Modifier une compétence</h3>
+
+        <div class="form-group">
+            <input type="text"
+            class="form-control"
+            placeholder="Intitulé compétence"
+            ng-model="$parent.title"></input>
+        </div>
+         <div style="float:left;" class="form-group formStep">
+            <textarea  
+            class="form-control"
+            placeholder="Première étape"
+            ng-model="$parent.firstStep"></textarea>
+        </div>
+         <div style="float:right;" class="form-group formStep" >
+            <textarea 
+            class="form-control"
+            placeholder="Deuxieme étape"
+            ng-model="$parent.secondStep"></textarea>
+        </div>
+         <div style="float:left;" class="form-group formStep">
+            <textarea  
+            class="form-control"
+            placeholder="Troisième étape"
+            ng-model="$parent.thirdStep"></textarea>
+        </div>
+         <div style="float:right;" class="form-group formStep">
+            <textarea 
+            class="form-control"
+            placeholder="Quatrième étape"
+            ng-model="$parent.fourthStep"></textarea>
+        </div>
+         <button type="submit" class="btn btn-primary">Modifier</button>   
+    </form>
+    </div>
+    
+
+    
+   
+   <div ng-hide="isLoggedIn()">
+      <h3>You need to <a href="/#/login">Log In</a> or <a href="/#/register">Register</a> before you can Manage.</h3>
+    </div>
+    
+    <table class="table table-striped">
+    <tr ng-repeat="skillpatern in user.skillpaterns">
+      <td style="width: 40%;">
+        {{skillpatern.title}}
+      </td>
+      <td>
+        <button type="button"   ng-show="!showModSkillPatern" ng-click="trueModSkillPatern(skillpatern);" class="btn btn-warning btnSup">Modifier</button>
+        <button type="button"   ng-show="showModSkillPatern" ng-click="falseModSkillPatern();" class="btn btn-info btnSup" >Fin Modifier</button>
+
+      </td>
+      <td>
+        <button type="button"  ng-show="showSuprSkillPatern" ng-click="suprSkillPatern(skillpatern);" class="btn btn-danger btnSup">Supprimer</button>
+      </td>
+    </tr>
+    </table>

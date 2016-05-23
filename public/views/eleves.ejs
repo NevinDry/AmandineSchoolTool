@@ -1,0 +1,80 @@
+    
+   <div  ng-show="isLoggedIn()">
+      <form ng-show="!showModEleve" ng-submit="addEleve()" class="addEleveForm" >
+        <h3>Ajouter un Eleve</h3>
+
+        <div class="form-group">
+            <input type="text"
+            class="form-control"
+            placeholder="Nom Eleve"
+            ng-model="$parent.lastname"></input>
+        </div>
+         <div class="form-group">
+            <input type="text"
+            class="form-control"
+            placeholder="Prenom"
+            ng-model="$parent.firstname"></input>
+        </div>
+        <div class="form-group">
+            <input type="text"
+            class="form-control"
+            placeholder="Image"
+            ng-model="$parent.image"></input>
+        </div>
+         <button type="submit" class="btn btn-primary">Ajouter</button>
+
+         <button type="button" class="btn btn-danger" ng-show="!showSupr" ng-click="showSupr=true;">Supprimer</button>
+         <button type="button" class="btn btn-info" ng-show="showSupr" ng-click="showSupr=false;">Fin suppression</button>
+       </form>
+       
+       <form ng-show="showModEleve" ng-submit="editEleve(eleveToEdit)" class="addEleveForm" >
+        <h3>Modifier un Eleve</h3>
+
+        <div class="form-group">
+            <input type="text"
+            class="form-control"
+            placeholder="Nom Eleve"
+            ng-model="$parent.lastname"></input>
+        </div>
+         <div class="form-group">
+            <input type="text"
+            class="form-control"
+            placeholder="Prenom"
+            ng-model="$parent.firstname"></input>
+        </div>
+        <div class="form-group">
+            <input type="text"
+            class="form-control"
+            placeholder="Image"
+            ng-model="$parent.image"></input>
+        </div>
+         <button type="submit" class="btn btn-primary">Modifier</button>
+       </form>
+       
+    </div>
+    
+
+    
+   
+   <div ng-hide="isLoggedIn()">
+      <h3>You need to <a href="/#/login">Log In</a> or <a href="/#/register">Register</a> before you can Manage.</h3>
+    </div>
+    
+    <table class="table table-striped">
+    <tr ng-repeat="eleve in user.eleves">
+      <td style="width: 40%;">
+        {{eleve.lastname}}
+      </td>
+      <td>
+        {{eleve.firstname}}
+      </td>
+      <td>
+        <button type="button"   ng-show="!showModEleve" ng-click="trueModEleve(eleve);" class="btn btn-warning btnSup">Modifier</button>
+        <button type="button"   ng-show="showModEleve" ng-click="falseModEleve();" class="btn btn-info btnSup" >Fin Modifier</button>
+
+      </td>
+      <td>
+        <button type="button"  ng-show="showSupr" ng-click="suprEleve(eleve);" class="btn btn-danger btnSup">Supprimer</button>
+      </td>
+    </tr>
+    </table>

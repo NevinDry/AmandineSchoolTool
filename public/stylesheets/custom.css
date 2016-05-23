@@ -1,0 +1,24 @@
+.rightManage{
+      border-left: solid;
+    width:50%;
+    float:right;
+    padding-left: 50px;
+    padding-right: 50px;
+}
+
+.leftManage{
+     width:50%;
+    float:left;
+    padding-left: 50px;
+    padding-right: 50px;
+}
+
+.btnSup{
+    
+    padding: 2px 5px;
+    font-size: 10px;
+}
+
+.formStep{
+    width:50%;
+}
