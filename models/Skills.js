@@ -2,7 +2,6 @@ var mongoose = require('mongoose');
 
 var SkillPaternSchema = new mongoose.Schema({
   title: String,
-  officialTitle: String,    
   firstStep: String,
   secondStep: String,
   thirdStep: String,

@@ -21,11 +21,20 @@
             placeholder="Image"
             ng-model="$parent.image"></input>
         </div>
-         <button type="submit" class="btn btn-primary">Ajouter</button>
 
+        <div style="display: inline; " ng-repeat="skillpatern in user.skillpaterns">
+            <label style="margin-right:20px;" >
+                <input type="checkbox" ng-model="skillpaternCheckBox[skillpatern._id]">
+                {{ skillpatern.title | limitTo: 15}}...     
+            </label> 
+        </div>
+        {{ formData }}
+        <div style="margin-top:20px;">
+         <button type="submit" class="btn btn-primary">Ajouter</button>
          <button type="button" class="btn btn-danger" ng-show="!showSupr" ng-click="showSupr=true;">Supprimer</button>
          <button type="button" class="btn btn-info" ng-show="showSupr" ng-click="showSupr=false;">Fin suppression</button>
-       </form>
+        </div>
+        </form>
        
        <form ng-show="showModEleve" ng-submit="editEleve(eleveToEdit)" class="addEleveForm" >
         <h3>Modifier un Eleve</h3>
@@ -43,6 +52,14 @@
             ng-model="$parent.firstname"></input>
         </div>
         <div class="form-group">
+            <input type="text"
+            class="form-control"
+            placeholder="Image"
+            ng-model="$parent.image"></input>
+        </div>
+
+
+<div class="form-group">
             <input type="text"
             class="form-control"
             placeholder="Image"

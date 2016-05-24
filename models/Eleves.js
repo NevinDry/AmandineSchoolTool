@@ -4,7 +4,8 @@ var EleveSchema = new mongoose.Schema({
   firstname: String,
   lastname: String,
   trombi: String,
-  user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
+  user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+  skills: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Skill' }], 
 });
 
 

@@ -102,6 +102,7 @@ app.controller('ManageCtrl', [
         
         //Get all data we need to display view
         $scope.user = {eleves: [], skillpaterns: []};
+        $scope.skillpaternCheckBox = {};
             
         eleves.getAll().success(function() {
             $scope.user.eleves = eleves.eleves;
@@ -110,6 +111,7 @@ app.controller('ManageCtrl', [
         skillpaterns.getAll().success(function() {
             $scope.user.skillpaterns = skillpaterns.skillpaterns;
         });
+        
         
         
         //Manage button clicking to edit/delete
@@ -142,6 +144,8 @@ app.controller('ManageCtrl', [
           $scope.secondStep = skillpatern.secondStep;
           $scope.thirdStep = skillpatern.thirdStep;
           $scope.fourthStep = skillpatern.fourthStep;
+          $scope.officialTitle = skillpatern.officialTitle;
+            
         };
         
         $scope.falseModSkillPatern = function(){
@@ -151,12 +155,13 @@ app.controller('ManageCtrl', [
           $scope.secondStep = '';
           $scope.thirdStep =  '';
           $scope.fourthStep =  '';
+          $scope.officialTitle =  '';   
         };
         
         
         //Skillpaterns functions create/edit/delete
         $scope.addSkillPatern = function(){
-          if(!$scope.title || !$scope.firstStep || !$scope.secondStep || !$scope.thirdStep || !$scope.fourthStep) { 
+          if(!$scope.title || !$scope.firstStep || !$scope.secondStep || !$scope.thirdStep || !$scope.fourthStep || !$scope.officialTitle) { 
           return; }
           
           skillpaterns.create({
@@ -165,6 +170,7 @@ app.controller('ManageCtrl', [
             secondStep: $scope.secondStep,
             thirdStep: $scope.thirdStep,
             fourthStep: $scope.fourthStep,
+            officialTitle: $scope.officialTitle,  
            }).success(function(skillpatern) {
              $scope.user.skillpaterns = skillpaterns.skillpaterns;
           });
@@ -173,10 +179,11 @@ app.controller('ManageCtrl', [
           $scope.secondStep = '';
           $scope.thirdStep = '';
           $scope.fourthStep = '';
+          $scope.officialTitle =  '';   
         };
         
         $scope.editSkillPatern = function(skillToEdit){
-              if(!$scope.title || !$scope.firstStep || !$scope.secondStep || !$scope.thirdStep || !$scope.fourthStep) {console.log($scope.firstname); 
+              if(!$scope.title || !$scope.firstStep || !$scope.secondStep || !$scope.thirdStep || !$scope.fourthStep || !$scope.officialTitle) { 
               return; }
 
               skillpaterns.edit({
@@ -185,6 +192,7 @@ app.controller('ManageCtrl', [
                 secondStep: $scope.secondStep,
                 thirdStep: $scope.thirdStep,
                 fourthStep: $scope.fourthStep,
+                officialTitle: $scope.officialTitle, 
                }, skillToEdit).success(function() {
                  $scope.user.skillpaterns = skillpaterns.skillpaterns;
               });
@@ -194,6 +202,7 @@ app.controller('ManageCtrl', [
               $scope.secondStep = '';
               $scope.thirdStep = '';
               $scope.fourthStep = '';
+              $scope.officialTitle =  ''; 
         };
         
         
@@ -206,18 +215,25 @@ app.controller('ManageCtrl', [
         
         //Eleves functions create/edit/delete
         $scope.addEleve = function(){
-          if(!$scope.lastname || !$scope.firstname || !$scope.image) {console.log($scope.firstname); return; }
-          
+          if(!$scope.lastname || !$scope.firstname || !$scope.image) { return; }
           eleves.create({
             lastname: $scope.lastname,
             firstname: $scope.firstname,
             trombi: $scope.image,
-           }).success(function(eleve) {
+           }).success(function() {
+              var skillToAddToEleve = angular.fromJson($scope.skillpaternCheckBox);
+              for(skillId in skillToAddToEleve)
+              {
+                  console.log(skillId);
+              }
              $scope.user.eleves = eleves.eleves;
-          });          
+          });
+            
+
           $scope.firstname = '';
           $scope.lastname = '';
           $scope.image = '';
+          
         };
         
         $scope.editEleve = function(eleveToEdit){

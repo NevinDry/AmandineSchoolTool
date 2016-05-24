@@ -95,8 +95,9 @@ router.put('/user/:user/skillpaterns/:skillpatern', auth, function(req, res, nex
         var firstStep = req.body.firstStep;
         var secondStep = req.body.secondStep;
         var thirdStep = req.body.thirdStep;
-        var fourthStep = req.body.fourthStep;  
-        skillpaternToEdit.update({ title: title, firstStep: firstStep, secondStep: secondStep, thirdStep: thirdStep, fourthStep: fourthStep}, function() {
+        var fourthStep = req.body.fourthStep;
+        var officialTitle = req.body.officialTitle;   
+        skillpaternToEdit.update({ title: title,  officialTitle: officialTitle, firstStep: firstStep, secondStep: secondStep, thirdStep: thirdStep, fourthStep: fourthStep}, function() {
             SkillPatern.find({user : userC} ,function(err, skillpaterns) {
                 if (err) { return next(err); }
                 res.json(skillpaterns);
