@@ -222,6 +222,21 @@ router.put('/user/:user/eleves/:eleve', auth, function(req, res, next) {
     });
 });
 
+router.delete('/user/:user/eleves/:eleve', function(req, res) {
+    var userC = req.user;
+    Eleve.remove({
+		_id: req.params.eleve
+	}, function(err, eleve) {
+     if (err) { return next(err); }
+       
+       Eleve.find({user : userC} ,function(err, eleves) {
+        if (err) { return next(err); }
+           res.json(eleves);
+       });	
+    });
+});
+
+
 router.delete('/eleves/:eleve/skills/:skill', function(req, res) {
     var eleveC = req.eleve;
     Skill.remove({
@@ -234,8 +249,6 @@ router.delete('/eleves/:eleve/skills/:skill', function(req, res) {
        });	
     });
 });
-
-
 
 
 router.param('user', function(req, res, next, id) {

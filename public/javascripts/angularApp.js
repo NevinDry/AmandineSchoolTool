@@ -241,6 +241,7 @@ app.controller('ManageCtrl', [
                         });
                      });
               }
+             $scope.skillpaternCheckBox = [];
              $scope.user.eleves = eleves.eleves;
           });
             
@@ -276,10 +277,10 @@ app.controller('ManageCtrl', [
                          });
                   }             
                  $scope.user.eleves = eleves.eleves;
+                 $scope.skillpaternCheckBox = [];
               });
-              angular.forEach($scope.user.skillpaterns, function (skillpatern) {
-                skillpatern.Selected = false;
-              });
+            
+
               $scope.showModEleve = false;
               $scope.firstname = '';
               $scope.lastname = '';
