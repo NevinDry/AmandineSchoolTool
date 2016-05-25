@@ -11,7 +11,12 @@ app.config([
               templateUrl: '/home.html',
               controller: 'MainCtrl',
             });
-
+        
+        $stateProvider.state('eleve', {
+              url:'/eleve/{id}',
+              templateUrl:'/eleve.html',
+              controller:'EleveCtrl',
+        });
         
        $stateProvider.state('login', {
           url: '/login',
@@ -47,13 +52,23 @@ app.config([
 	}
 ]);
 
-
-app.controller('MainCtrl', [
-    '$scope',
-    'auth',
-    function($scope, auth){
-      
+//Directive for uploading image from camera
+app.directive('fileModel', ['$parse', function ($parse) {
+    return {
+        restrict: 'A',
+        link: function(scope, element, attrs) {
+            var model = $parse(attrs.fileModel);
+            var modelSetter = model.assign;
+            
+            element.bind('change', function(){
+                scope.$apply(function(){
+                    modelSetter(scope, element[0].files[0]);
+                });
+            });
+        }
+    };
 }]);
+
 
 app.controller('AuthCtrl', [
     '$scope',
@@ -89,6 +104,46 @@ app.controller('NavCtrl', [
       $scope.isLoggedIn = auth.isLoggedIn;
       $scope.currentUser = auth.currentUser;
       $scope.logOut = auth.logOut;
+}]);
+
+app.controller('EleveCtrl', [
+    '$scope',
+    '$stateParams',
+    'auth',
+    'eleves',
+    function($scope, $stateParams, auth, eleves){
+        eleves.get($stateParams.id).then(function(eleve){
+            //retrieve the current eleve 
+            $scope.eleve = eleve;
+            //retrieve all his skills
+             eleves.getAllSkill(eleve).then(function(skills){
+                 $scope.eleve.skills=skills.data;
+                 
+                 //setting a default skill
+                 $scope.skillToShow = skills.data[0];
+             });
+            
+        });
+}]);
+
+app.controller('MainCtrl', [
+    '$scope',
+     '$state',
+    'auth',
+    'eleves',
+    function($scope, $state, auth, eleves){
+        
+        //Get all data we need to display view
+        $scope.isLoggedIn = auth.isLoggedIn;
+
+        $scope.user = {eleves: []};            
+        eleves.getAll().success(function() {
+            $scope.user.eleves = eleves.eleves;
+        });
+        
+        $scope.eleveViewEngine = function(eleve){
+            $state.go('eleve',  {id :eleve._id});
+        }  
 }]);
 
 
@@ -218,15 +273,21 @@ app.controller('ManageCtrl', [
         
         //Eleves functions create/edit/delete
         $scope.addEleve = function(){
-          if(!$scope.lastname || !$scope.firstname || !$scope.image) { return; }
+          if(!$scope.lastname || !$scope.firstname || !$scope.imageEleve) { return; }
+          //Getting image file (gor the name and then for the upload)  
+          var imageEleve = $scope.imageEleve; 
+            
           eleves.create({
             lastname: $scope.lastname,
             firstname: $scope.firstname,
-            trombi: $scope.image,
+            trombi: $scope.imageEleve.name,
            }).success(function() {
+              
+              //We need to create skills from each selected skillpaterns
               var skillToAddToEleve = angular.fromJson($scope.skillpaternCheckBox);
               for(skillId in skillToAddToEleve)
               {
+                    //for each skillpatern selected we recover data and create a new Skill with these data
                     skillpaterns.get(skillId).then(function(skillpatern){
                         var skill = {
                                 title: skillpatern.title,
@@ -235,12 +296,24 @@ app.controller('ManageCtrl', [
                                 thirdStep: skillpatern.thirdStep,
                                 fourthStep: skillpatern.fourthStep,
                                 officialTitle: skillpatern.officialTitle,  
-                               }                 
+                                                            
+                                //setting a defaut image to show
+                                firstStepPhoto: 'sinisjecht.jpg',
+                                secondStepPhoto: 'sinisjecht.jpg',
+                                thirdStepPhoto: 'sinisjecht.jpg',
+                                fourthStepPhoto: 'sinisjecht.jpg',
+                               }
+                        //Call CRUD to add a skill to an eleve
                         eleves.createSkill(eleves.eleves[eleves.eleves.length-1], skill).success(function() {
-                            console.log("youpi");
                         });
                      });
               }
+              
+              //Now we need to upload the image file to the server
+              var uploadUrl = "/uploadImageEleve";
+              eleves.uploadEleveToServ(imageEleve, uploadUrl);
+              
+             //Uncheking boxes, update scope eleves 
              $scope.skillpaternCheckBox = [];
              $scope.user.eleves = eleves.eleves;
           });
@@ -253,12 +326,20 @@ app.controller('ManageCtrl', [
         };
         
         $scope.editEleve = function(eleveToEdit){
-              if(!$scope.lastname || !$scope.firstname || !$scope.image) { return; }
-
+              if(!$scope.lastname || !$scope.firstname) { return; }
+              
+            //checking and managing image 
+            var imageEleve;
+            if($scope.imageEleve){
+                  imageEleve = $scope.imageEleve; 
+             }else{
+                 imageEleve = $scope.eleveToEdit.trombi;
+             }
+            console.log("imageeleve"+imageEleve);
               eleves.edit({
                 lastname: $scope.lastname,
                 firstname: $scope.firstname,
-                trombi: $scope.image,
+                trombi: imageEleve.name,
                }, eleveToEdit).success(function() {
                   var skillToAddToEleve = angular.fromJson($scope.skillpaternCheckBox);
                   for(skillId in skillToAddToEleve)
@@ -270,12 +351,19 @@ app.controller('ManageCtrl', [
                                     secondStep: skillpatern.secondStep,
                                     thirdStep: skillpatern.thirdStep,
                                     fourthStep: skillpatern.fourthStep,
-                                    officialTitle: skillpatern.officialTitle,  
-                                   }                 
+                                    officialTitle: skillpatern.officialTitle, 
+                                    
+                                   }
+                            //we create skill for the last added eleve
                             eleves.createSkill(eleves.eleves[eleves.eleves.length-1], skill).success(function() {
                             });
                          });
-                  }             
+                  }
+                  //If user as selected an image, we need to upload it
+                  if($scope.imageEleve){
+                      var uploadUrl = "/uploadImageEleve";
+                      eleves.uploadEleveToServ($scope.imageEleve, uploadUrl); 
+                  }
                  $scope.user.eleves = eleves.eleves;
                  $scope.skillpaternCheckBox = [];
               });
@@ -355,6 +443,7 @@ app.factory('eleves', ['$http', 'auth', function($http, auth){
     
     e.get = function(id) {
         return $http.get('/eleves/' + id).then(function(res){
+             return res.data;
         });
     };
     
@@ -387,6 +476,7 @@ app.factory('eleves', ['$http', 'auth', function($http, auth){
     };  
     
     e.edit = function(newEleve, eleve) {
+        console.log(newEleve);
         return $http.put('/user/' + auth.getUser() + '/eleves/' + eleve._id, newEleve, {
         headers: {Authorization: 'Bearer '+auth.getToken()}
       }).success(function(data){
@@ -399,6 +489,20 @@ app.factory('eleves', ['$http', 'auth', function($http, auth){
           angular.copy(data, e.eleves);
       });
     };  
+    
+    e.uploadEleveToServ = function(file, uploadUrl){
+         var fd = new FormData();
+         fd.append('file', file);
+        $http.post(uploadUrl, fd, {
+            transformRequest: angular.identity,
+            headers: {'Content-Type': undefined}
+        })
+        .success(function(){
+            console.log("image uploaded");
+        })
+        .error(function(){
+        });
+    }
     
   return e;
 }]);

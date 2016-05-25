@@ -1,12 +1,7 @@
+'use strict';
 var express = require('express');
 var router = express.Router();
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
-});
-
-module.exports = router;
 
 var mongoose = require('mongoose');
 var User = mongoose.model('User');
@@ -16,8 +11,23 @@ var Skill = mongoose.model('Skill');
 
 var jwt = require('express-jwt');
 var passport = require('passport');
+var multer = require('multer');
 
 var auth = jwt({secret: 'pinkfloydC', userProperty: 'payload'});
+
+var storage = multer.diskStorage({
+      destination: function (req, file, cb) {
+        cb(null, './public/uploads/eleves/')
+    },
+    filename: function (req, file, cb) {
+        cb(null, file.originalname)
+  }
+});
+var uploadEleveImage = multer({ storage: storage });
+
+router.post('/uploadImageEleve', uploadEleveImage.single('file'), function(req, res, next) {
+  console.log("Uploaded");
+});
 
 //
 // AUTH ROUTES
@@ -54,6 +64,11 @@ router.post('/register', function(req, res, next){
 
     return res.json({token: user.generateJWT()})
   });
+});
+
+/* GET home page. */
+router.get('/', function(req, res, next) {
+  res.render('index', { title: 'Express' });
 });
 
 
@@ -277,3 +292,6 @@ router.param('eleve', function(req, res, next, id) {
     return next();
   });
 });
+
+
+module.exports = router;

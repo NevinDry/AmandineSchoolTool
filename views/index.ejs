@@ -28,9 +28,38 @@
   </div>
 
   <script type="text/ng-template" id="/home.html">
-
-    Bienvenue
+     
+    <div  ng-show="isLoggedIn()">   
     
+        <div style="display: inline; " ng-repeat="eleve in user.eleves">
+            <img ng-click="eleveViewEngine(eleve);" class="imageEleveMain" ng-src="/uploads/eleves/{{eleve.trombi}}">
+        </div>
+    </div>
+    
+  </script>
+  
+  <script type="text/ng-template" id="/eleve.html">
+        <span ng-repeat="skill in eleve.skills" class="labelSkillEleve label label-primary">
+            {{skill.title}}
+        </span>
+        <div>
+            <div class="skillToShowLeft">
+                <img class="imageSkill" src="/images/{{skillToShow.firstStepPhoto}}">
+                <h3>{{skillToShow.firstStep}}</h3>
+            </div>
+            <div class="skillToShowRight">
+                <img class="imageSkill" src="/images/{{skillToShow.secondStepPhoto}}">
+                <h3>{{skillToShow.secondStep}}</h3>
+            </div>
+            <div class="skillToShowLeft">
+                <img  class="imageSkill" src="/images/{{skillToShow.thirdStepPhoto}}">
+                <h3>{{skillToShow.thirdStep}}</h3>
+            </div>
+            <div class="skillToShowRight">
+                <img class="imageSkill" src="/images/{{skillToShow.fourthStepPhoto}}">
+                  <h3>{{skillToShow.fourthStep}}</h3>
+            </div>
+        </div>
   </script>
     
     

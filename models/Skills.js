@@ -7,6 +7,10 @@ var SkillSchema = new mongoose.Schema({
   secondStep: String,
   thirdStep: String,
   fourthStep: String,
+  firstStepPhoto: String,
+  secondStepPhoto: String, 
+  thirdStepPhoto: String,
+  fourthStepPhoto: String,
   eleve: { type: mongoose.Schema.Types.ObjectId, ref: 'Eleve' }
 });
 

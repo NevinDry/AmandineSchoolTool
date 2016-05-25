@@ -22,3 +22,39 @@
 .formStep{
     width:50%;
 }
+
+.imageEleveMain{
+    width: 250px;
+    height: 320px;
+    margin-left : 20px;
+    margin-right: 20px;
+    margin-bottom: 20px;
+
+}
+
+.labelSkillEleve{
+    font-size: 15px;
+    margin-right: 20px
+}
+
+.skillToShowLeft{
+    float: left;
+    width:50%;
+        height: 40%;
+    vertical-align: middle;
+    text-align: center;
+}
+
+.skillToShowRight{
+    float: right;
+      width:50%;
+    height: 40%;
+    vertical-align: middle;
+    text-align: center;
+}
+
+.imageSkill{
+    text-align: center;
+       width: 35%;
+    height: 80%;
+}
