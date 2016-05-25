@@ -1,14 +1,15 @@
 var mongoose = require('mongoose');
 
-var SkillPaternSchema = new mongoose.Schema({
+var SkillSchema = new mongoose.Schema({
   title: String,
+  officialTitle: String,    
   firstStep: String,
   secondStep: String,
   thirdStep: String,
   fourthStep: String,
-  user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
+  eleve: { type: mongoose.Schema.Types.ObjectId, ref: 'Eleve' }
 });
 
 
 
-mongoose.model('SkillPatern', SkillPaternSchema);
+mongoose.model('Skill', SkillSchema);

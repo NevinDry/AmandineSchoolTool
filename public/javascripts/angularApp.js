@@ -124,6 +124,9 @@ app.controller('ManageCtrl', [
         $scope.trueModEleve = function(eleve){
           $scope.showModEleve = true;
           $scope.eleveToEdit = eleve;
+            
+          eleves.getAllSkill(eleve).then(function(skills){$scope.eleveToEdit.skills=skills.data});
+          console.log($scope.eleveToEdit);
           $scope.firstname = eleve.firstname;
           $scope.lastname = eleve.lastname;
           $scope.image = eleve.trombi;
@@ -224,7 +227,19 @@ app.controller('ManageCtrl', [
               var skillToAddToEleve = angular.fromJson($scope.skillpaternCheckBox);
               for(skillId in skillToAddToEleve)
               {
-                  console.log(skillId);
+                    skillpaterns.get(skillId).then(function(skillpatern){
+                        var skill = {
+                                title: skillpatern.title,
+                                firstStep: skillpatern.firstStep,
+                                secondStep: skillpatern.secondStep,
+                                thirdStep: skillpatern.thirdStep,
+                                fourthStep: skillpatern.fourthStep,
+                                officialTitle: skillpatern.officialTitle,  
+                               }                 
+                        eleves.createSkill(eleves.eleves[eleves.eleves.length-1], skill).success(function() {
+                            console.log("youpi");
+                        });
+                     });
               }
              $scope.user.eleves = eleves.eleves;
           });
@@ -244,7 +259,26 @@ app.controller('ManageCtrl', [
                 firstname: $scope.firstname,
                 trombi: $scope.image,
                }, eleveToEdit).success(function() {
+                  var skillToAddToEleve = angular.fromJson($scope.skillpaternCheckBox);
+                  for(skillId in skillToAddToEleve)
+                  {
+                        skillpaterns.get(skillId).then(function(skillpatern){
+                            var skill = {
+                                    title: skillpatern.title,
+                                    firstStep: skillpatern.firstStep,
+                                    secondStep: skillpatern.secondStep,
+                                    thirdStep: skillpatern.thirdStep,
+                                    fourthStep: skillpatern.fourthStep,
+                                    officialTitle: skillpatern.officialTitle,  
+                                   }                 
+                            eleves.createSkill(eleves.eleves[eleves.eleves.length-1], skill).success(function() {
+                            });
+                         });
+                  }             
                  $scope.user.eleves = eleves.eleves;
+              });
+              angular.forEach($scope.user.skillpaterns, function (skillpatern) {
+                skillpatern.Selected = false;
               });
               $scope.showModEleve = false;
               $scope.firstname = '';
@@ -256,6 +290,10 @@ app.controller('ManageCtrl', [
             eleves.delete(eleve).success(function(eleve) {   
                 $scope.user.eleves = eleves.eleves;
             });
+        };
+        
+        $scope.deleteSkill = function(eleve, skill){
+            eleves.deleteSkill(eleve, skill).then(function(skills){$scope.eleveToEdit.skills=skills.data});
         };
 	}
 ]);
@@ -269,6 +307,12 @@ app.factory('skillpaterns', ['$http', 'auth', function($http, auth){
       return $http.get('/user/' + auth.getUser() + '/skillpaterns').success(function(data){
           angular.copy(data, s.skillpaterns);
       });
+    };
+    
+    s.get = function(id) {
+        return $http.get('/skillpaterns/' + id).then(function(res){
+            return res.data;
+    });
     };
     
     s.create = function(skillpatern) {
@@ -308,6 +352,17 @@ app.factory('eleves', ['$http', 'auth', function($http, auth){
       });
     };
     
+    e.get = function(id) {
+        return $http.get('/eleves/' + id).then(function(res){
+        });
+    };
+    
+    e.getAllSkill = function(eleve) {
+      return $http.get('/eleves/' + eleve._id + '/skill').success(function(res){
+          return res.data;
+      });
+    };
+    
     e.create = function(eleve) {
       return $http.post('/user/' + auth.getUser() + '/eleves', eleve, {
         headers: {Authorization: 'Bearer '+auth.getToken()}
@@ -315,6 +370,20 @@ app.factory('eleves', ['$http', 'auth', function($http, auth){
             angular.copy(data, e.eleves);
       });
     };
+    
+    e.createSkill = function(eleve, skill) {
+      return $http.post('/user/' + auth.getUser() + '/eleves/' + eleve._id +"/skill", skill, {
+        headers: {Authorization: 'Bearer '+auth.getToken()}
+      }).success(function(data){
+            angular.copy(data, e.eleves);
+      });
+    };
+    
+     e.deleteSkill = function(eleve, skill) {
+      return $http.delete('/eleves/'+ eleve._id +'/skills/' + skill._id).success(function(res){
+          return res.data;
+      });
+    };  
     
     e.edit = function(newEleve, eleve) {
         return $http.put('/user/' + auth.getUser() + '/eleves/' + eleve._id, newEleve, {

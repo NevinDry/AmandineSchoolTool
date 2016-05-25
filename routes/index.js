@@ -12,6 +12,7 @@ var mongoose = require('mongoose');
 var User = mongoose.model('User');
 var Eleve = mongoose.model('Eleve');
 var SkillPatern = mongoose.model('SkillPatern');
+var Skill = mongoose.model('Skill');
 
 var jwt = require('express-jwt');
 var passport = require('passport');
@@ -64,6 +65,10 @@ router.get('/user/:user/skillpaterns', function(req, res, next) {
             if (err) { return next(err); }
                res.json(skillpaterns);
       });	
+});
+
+router.get('/skillpaterns/:skillpatern', function(req, res) {
+   res.json(req.skillpatern);
 });
 
 router.post('/user/:user/skillpaterns', auth, function(req, res, next) {
@@ -147,6 +152,19 @@ router.get('/user/:user/eleves', function(req, res, next) {
       });	
 });
 
+router.get('/eleves/:eleve', function(req, res) {
+   res.json(req.eleve);
+});
+
+
+router.get('/eleves/:eleve/skill', function(req, res, next) {
+      Skill.find({eleve : req.eleve} ,function(err, skills) {
+            if (err) { return next(err); }
+             res.json(skills);
+      });	
+});
+
+
 router.post('/user/:user/eleves', auth, function(req, res, next) {
    var eleve = new Eleve(req.body);
    eleve.user = req.user;
@@ -159,12 +177,30 @@ router.post('/user/:user/eleves', auth, function(req, res, next) {
       if(err){ return next(err); }
         Eleve.find({user : req.user} ,function(err, eleves) {
             if (err) { return next(err); }
-            console.log(eleves);
             res.json(eleves);
         });	
     });
   });
 });
+
+router.post('/user/:user/eleves/:eleve/skill', auth, function(req, res, next) {
+   var skill = new Skill(req.body);
+   skill.eleve = req.eleve;
+    
+    skill.save(function(err, skill){
+    if(err){ return next(err); }
+
+    req.eleve.skills.push(skill);
+    req.eleve.save(function(err, post) {
+      if(err){ return next(err); }
+        Eleve.find({user : req.user} ,function(err, eleves) {
+            if (err) { return next(err); }
+            res.json(eleves);
+        });	
+    });
+  });
+});
+
 
 router.put('/user/:user/eleves/:eleve', auth, function(req, res, next) {
     var userC = req.user;
@@ -186,19 +222,21 @@ router.put('/user/:user/eleves/:eleve', auth, function(req, res, next) {
     });
 });
 
-router.delete('/user/:user/eleves/:eleve', function(req, res) {
-    var userC = req.user;
-    Eleve.remove({
-		_id: req.params.eleve
-	}, function(err, eleve) {
-     if (err) { return next(err); }
-       
-       Eleve.find({user : userC} ,function(err, eleves) {
+router.delete('/eleves/:eleve/skills/:skill', function(req, res) {
+    var eleveC = req.eleve;
+    Skill.remove({
+		_id: req.params.skill
+	}, function(err, skill) {
+     if (err) { return next(err); }    
+       Skill.find({eleve : eleveC} ,function(err, skills) {
         if (err) { return next(err); }
-           res.json(eleves);
+           res.json(skills);
        });	
     });
 });
+
+
+
 
 router.param('user', function(req, res, next, id) {
 

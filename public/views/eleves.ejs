@@ -28,7 +28,6 @@
                 {{ skillpatern.title | limitTo: 15}}...     
             </label> 
         </div>
-        {{ formData }}
         <div style="margin-top:20px;">
          <button type="submit" class="btn btn-primary">Ajouter</button>
          <button type="button" class="btn btn-danger" ng-show="!showSupr" ng-click="showSupr=true;">Supprimer</button>
@@ -58,13 +57,21 @@
             ng-model="$parent.image"></input>
         </div>
 
-
-<div class="form-group">
-            <input type="text"
-            class="form-control"
-            placeholder="Image"
-            ng-model="$parent.image"></input>
+        <div style="display: inline; " ng-repeat="skillpatern in user.skillpaterns">
+            <label style="margin-right:20px;" >
+                <input type="checkbox" ng-model="skillpaternCheckBox[skillpatern._id]">
+                {{ skillpatern.title | limitTo: 15}}...     
+            </label> 
         </div>
+                
+        <table class="table table-striped">
+            <tr ng-repeat="skill in eleveToEdit.skills">
+                <td>{{skill.title}}</td>
+                <td><button type="button" ng-click="deleteSkill(eleveToEdit,skill);" class="btn btn-danger btnSup">Supprimer</button></td>
+            </tr>
+        </table>
+
+        
          <button type="submit" class="btn btn-primary">Modifier</button>
        </form>
        
