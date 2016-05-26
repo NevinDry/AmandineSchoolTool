@@ -69,6 +69,16 @@ app.directive('fileModel', ['$parse', function ($parse) {
     };
 }]);
 
+//directive to check change on the input file skill (when user decide to add a photo for a step)
+app.directive('customOnChange', function() {
+  return {
+    restrict: 'A',
+    link: function (scope, element, attrs) {
+      var onChangeFunc = scope.$eval(attrs.customOnChange);
+      element.bind('change', onChangeFunc);
+    }
+  };
+});
 
 app.controller('AuthCtrl', [
     '$scope',
@@ -109,9 +119,10 @@ app.controller('NavCtrl', [
 app.controller('EleveCtrl', [
     '$scope',
     '$stateParams',
+    '$timeout',
     'auth',
     'eleves',
-    function($scope, $stateParams, auth, eleves){
+    function($scope, $stateParams, $timeout, auth, eleves){
         eleves.get($stateParams.id).then(function(eleve){
             //retrieve the current eleve 
             $scope.eleve = eleve;
@@ -123,6 +134,30 @@ app.controller('EleveCtrl', [
                  $scope.skillToShow = skills.data[0];
              });
             
+            //we check everytime a file input is change to tell the user he can add this image to the server
+            $scope.secondFileIsLoaded = false;
+            
+            $scope.uploadFirstStep = function(){
+                var filename = event.target.files[0].name;
+            };
+            
+            $scope.uploadSecondStep = function(){
+                var filename = event.target.files[0].name;
+               
+                console.log(filename);
+                   $timeout(function() {
+                     $scope.secondFileIsLoaded = true;
+                }, 300);
+                $scope.apply();
+            };
+            
+            $scope.uploadThirdStep = function(){
+                var filename = event.target.files[0].name;
+            };
+            
+            $scope.uploadFourthStep = function(){
+                var filename = event.target.files[0].name;
+            };     
         });
 }]);
 
@@ -298,10 +333,10 @@ app.controller('ManageCtrl', [
                                 officialTitle: skillpatern.officialTitle,  
                                                             
                                 //setting a defaut image to show
-                                firstStepPhoto: 'sinisjecht.jpg',
-                                secondStepPhoto: 'sinisjecht.jpg',
-                                thirdStepPhoto: 'sinisjecht.jpg',
-                                fourthStepPhoto: 'sinisjecht.jpg',
+                                firstStepPhoto: 'defaut',
+                                secondStepPhoto: 'defaut',
+                                thirdStepPhoto: 'defaut',
+                                fourthStepPhoto: 'defaut',
                                }
                         //Call CRUD to add a skill to an eleve
                         eleves.createSkill(eleves.eleves[eleves.eleves.length-1], skill).success(function() {

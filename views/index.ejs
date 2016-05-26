@@ -39,27 +39,7 @@
   </script>
   
   <script type="text/ng-template" id="/eleve.html">
-        <span ng-repeat="skill in eleve.skills" class="labelSkillEleve label label-primary">
-            {{skill.title}}
-        </span>
-        <div>
-            <div class="skillToShowLeft">
-                <img class="imageSkill" src="/images/{{skillToShow.firstStepPhoto}}">
-                <h3>{{skillToShow.firstStep}}</h3>
-            </div>
-            <div class="skillToShowRight">
-                <img class="imageSkill" src="/images/{{skillToShow.secondStepPhoto}}">
-                <h3>{{skillToShow.secondStep}}</h3>
-            </div>
-            <div class="skillToShowLeft">
-                <img  class="imageSkill" src="/images/{{skillToShow.thirdStepPhoto}}">
-                <h3>{{skillToShow.thirdStep}}</h3>
-            </div>
-            <div class="skillToShowRight">
-                <img class="imageSkill" src="/images/{{skillToShow.fourthStepPhoto}}">
-                  <h3>{{skillToShow.fourthStep}}</h3>
-            </div>
-        </div>
+    <div ng-include src="'/views/main.ejs'"></div>
   </script>
     
     
