@@ -1,60 +1,95 @@
-        <span ng-repeat="skill in eleve.skills" class="labelSkillEleve label label-primary">
-            {{skill.title}}
-        </span>
+        <div class="skillSelect">
+            <select class="skillSelect" ng-model="skillToShow" ng-change="selectSkillToShow()" ng-options="skill as skill.title for skill in eleve.skills" >
+                <option>--</option>
+    </select>
+            </select>
+        </div>
+
+
         <div style="margin-top:15px;">
+             
             <div style="border-bottom: solid;" class="skillToShowLeft">
-                <div class="imageSkill">
-                    <input ng-if="skillToShow.firstStepPhoto =='defaut'" class="inputfile" name="file" id="file" type="file" accept="image/*" id="capture"  file-model="firstStepFile" capture="camera" custom-on-change="uploadFirstStep" />
-                    <label for="file">
+                <div ng-show="skillToShow.firstStepPhoto == 'defaut'" class="inputSkill">
+                    <input class="inputfile" name="file" id="file" type="file" accept="image/*" id="capture"  file-model="$parent.firstStepFileToUpload" capture="camera"/>
+                    <label ng-show="skillToShow.firstStepPhoto =='defaut'" ng-click="firstFileIsLoaded=true"  for="file">
                        <span class="glyphicon glyphicon-camera iconPhoto" aria-hidden="true"></span>
-                       <span class="iconPhoto" >Prendre Photo</span>
+                        <span ng-show="firstFileIsLoaded" class="iconPhoto" >Reprendre Photo</span>
+                        <span ng-show="!firstFileIsLoaded" class="iconPhoto">Prendre Photo</span>
                     </label>
+                    <button type="button" ng-show="firstFileIsLoaded" ng-click="uploadFirstStepPhoto(skillToShow)" class="btn btn-warning">Ajouter la photo</button>
                 </div>
                 
-                <img ng-if="skillToShow.firstStepPhoto !='defaut'" class="imageSkill" src="/images/{{skillToShow.firstStepPhoto}}">
-                <h4 class="skillTitle" >{{skillToShow.firstStep}}</h3>
+                <div ng-show="skillToShow.firstStepPhoto !='defaut'">
+                    <img  class="imageSkill" src="/uploads/skills/{{skillToShow.firstStepPhoto}}">
+                    <label ng-click="firstFileIsLoaded=true"  for="file">
+                        <span class="glyphicon glyphicon-camera iconPhotoSkillImage" aria-hidden="true"></span>
+                    </label>
+                    <span style="color:rgb(220, 165, 37);" ng-show="firstFileIsLoaded" ng-click="uploadFirstStepPhoto(skillToShow)" class="glyphicon glyphicon-open iconPhotoSkillImage" aria-hidden="true"></span>
+                </div>
+     
+                 <h4 class="skillTitle" >{{skillToShow.firstStep}}</h3>
             </div>
-            
+
             
             <div style="border-bottom: solid;" class="skillToShowRight">
-                <div class="imageSkill">
-                    <input ng-if="skillToShow.secondStepPhoto =='defaut'" class="inputfile" name="file2" id="file2" type="file" accept="image/*" id="capture" file-model="secondStepFile" capture="camera" custom-on-change="uploadSecondStep"/>
-                    <label for="file2">
+                <div ng-show="skillToShow.secondStepPhoto == 'defaut'" class="inputSkill">
+                    <input class="inputfile" name="file2" id="file2" type="file" accept="image/*" id="capture" file-model="$parent.secondStepFileToUpload" capture="camera"/>
+                    <label ng-show="skillToShow.secondStepPhoto =='defaut'" ng-click="secondFileIsLoaded=true" for="file2">
                        <span class="glyphicon glyphicon-camera iconPhoto" aria-hidden="true"></span>
                         <span ng-show="secondFileIsLoaded" class="iconPhoto" >Reprendre Photo</span>
-                       <span ng-show="!secondFileIsLoaded" class="iconPhoto" >Prendre Photo</span>
+                        <span ng-show="!secondFileIsLoaded" class="iconPhoto" >Prendre Photo</span>
                     </label>
-                    {{secondFileIsLoaded}}
-                    <button type="button" ng-show="secondFileIsLoaded" class="btn btn-warning">Ajouter la photo</button>
-                    <button type="button" ng-show="secondFileIsLoaded" ng-click="secondFileIsLoaded=false;" class="btn btn-danger">Annuler</button>
+                    <button type="button" ng-show="secondFileIsLoaded"  ng-click="uploadSecondtStepPhoto(skillToShow)" class="btn btn-warning">Ajouter la photo</button>
                 </div>
-                <img ng-if="skillToShow.secondStepPhoto !='defaut'"  class="imageSkill" src="/images/{{skillToShow.secondStepPhoto}}">
+                 <div ng-show="skillToShow.secondStepPhoto !='defaut'">
+                    <img  class="imageSkill" src="/uploads/skills/{{skillToShow.secondStepPhoto}}">
+                    <label ng-click="secondFileIsLoaded=true"  for="file2">
+                        <span class="glyphicon glyphicon-camera iconPhotoSkillImage" aria-hidden="true"></span>
+                    </label>
+                    <span style="color:rgb(220, 165, 37);" ng-show="secondFileIsLoaded" ng-click="uploadSecondtStepPhoto(skillToShow)" class="glyphicon glyphicon-open iconPhotoSkillImage" aria-hidden="true"></span>
+                </div>
                 <h4>{{skillToShow.secondStep}}</h3>        
             </div>
             
             <div class="skillToShowLeft">
-                <div class="imageSkill">
-                    <input ng-if="skillToShow.thirdStepPhoto =='defaut'" class="inputfile" name="file3" id="file3" type="file" accept="image/*" id="capture"  file-model="thirdStepFile" capture="camera"  custom-on-change="uploadThirdStep"/>
-                    <label for="file3">
+                <div ng-show="skillToShow.thirdStepPhoto == 'defaut'" class="inputSkill">
+                    <input class="inputfile" name="file3" id="file3" type="file" accept="image/*" id="capture"  file-model="$parent.thirdStepFileToUpload" capture="camera" />
+                    <label ng-show="skillToShow.thirdStepPhoto =='defaut'" ng-click="thirdFileIsLoaded=true" for="file3">
                        <span class="glyphicon glyphicon-camera iconPhoto" aria-hidden="true"></span>
-                       <span class="iconPhoto" >Prendre Photo</span>
+                        <span ng-show="thirdFileIsLoaded" class="iconPhoto" >Reprendre Photo</span>
+                        <span ng-show="!thirdFileIsLoaded" class="iconPhoto" >Prendre Photo</span>
                     </label>
+                    <button type="button" ng-show="thirdFileIsLoaded"  ng-click="uploadThirdStepPhoto(skillToShow)" class="btn btn-warning">Ajouter la photo</button>
                 </div>
                 
-                <img ng-if="skillToShow.thirdStepPhoto != 'defaut'"  class="imageSkill" src="/images/{{skillToShow.thirdStepPhoto}}">
+                <div ng-show="skillToShow.thirdStepPhoto !='defaut'">
+                    <img  class="imageSkill" src="/uploads/skills/{{skillToShow.thirdStepPhoto}}">
+                    <label ng-click="thirdFileIsLoaded=true"  for="file3">
+                        <span class="glyphicon glyphicon-camera iconPhotoSkillImage" aria-hidden="true"></span>
+                    </label>
+                    <span style="color:rgb(220, 165, 37);" ng-show="thirdFileIsLoaded" ng-click="uploadThirdStepPhoto()" class="glyphicon glyphicon-open iconPhotoSkillImage" aria-hidden="true"></span>
+                </div>
                 <h4>{{skillToShow.thirdStep}}</h3>
             </div>
             
             <div class="skillToShowRight">
-                <div class="imageSkill">
-                    <input ng-if="skillToShow.fourthStepPhoto =='defaut'" class="inputfile" name="file4" id="file4" type="file" accept="image/*" id="capture"  file-model="fourthStepFile" capture="camera"  custom-on-change="uploadFourthStep"/>
-                    <label for="file4">
+                <div ng-show="skillToShow.fourthStepPhoto == 'defaut'" class="inputSkill">
+                    <input class="inputfile" name="file4" id="file4" type="file" accept="image/*" id="capture"  file-model="$parent.fourthStepFileToUpload" capture="camera"  />
+                    <label ng-show="skillToShow.fourthStepPhoto =='defaut'" ng-click="fourthFileIsLoaded=true"  for="file4">
                        <span class="glyphicon glyphicon-camera iconPhoto" aria-hidden="true"></span>
-                       <span class="iconPhoto" >Prendre Photo</span>
+                        <span ng-show="fourthFileIsLoaded" class="iconPhoto" >Reprendre Photo</span>
+                        <span ng-show="!fourthFileIsLoaded" class="iconPhoto" >Prendre Photo</span>
                     </label>
+                        <button type="button" ng-show="fourthFileIsLoaded"  ng-click="uploadFourthStepPhoto(skillToShow)" class="btn btn-warning">Ajouter la photo</button>
                 </div>
                 
-                <img ng-if="skillToShow.fourthStepPhoto !='defaut'"  class="imageSkill" src="/images/{{skillToShow.fourthStepPhoto}}">
+                <div ng-show="skillToShow.fourthStepPhoto !='defaut'">
+                    <img  class="imageSkill" src="/uploads/skills/{{skillToShow.fourthStepPhoto}}">
+                    <label ng-click="fourthFileIsLoaded=true"  for="file4">
+                        <span class="glyphicon glyphicon-camera iconPhotoSkillImage" aria-hidden="true"></span>
+                    </label>
+                    <span style="color:rgb(220, 165, 37);" ng-show="fourthFileIsLoaded" ng-click="uploadFourthStepPhoto(skillToShow)" class="glyphicon glyphicon-open iconPhotoSkillImage" aria-hidden="true"></span>
+                </div>
                 <h4>{{skillToShow.fourthStep}}</h3>
             </div>
         </div>

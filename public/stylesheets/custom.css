@@ -34,7 +34,12 @@
 
 .labelSkillEleve{
     font-size: 15px;
-    margin-right: 20px
+    width: 50%;
+    float: left;
+}
+
+.skillSelect{
+  font-weight: bold;
 }
 
 .skillToShowLeft{
@@ -57,10 +62,18 @@
 }
 
 .imageSkill{
-        margin: auto;
+    margin: auto;
+    text-align: center;
+    width: 60%;
+    height: 80%;
+        margin-left: 10%;
+}
+
+.inputSkill{
+    margin: auto;
     text-align: center;
     width: 40%;
-    height: 80%;
+    height: 80%; 
 }
 
 
@@ -92,6 +105,16 @@
 
 .iconPhoto {
     color : white;
+    width: 1em;
+    height: 1em;
+    vertical-align: middle;
+    fill: currentColor;
+    margin-right: 0.25em;
+}
+
+.iconPhotoSkillImage {
+    font-size: xx-large;
+    color : green;
     width: 1em;
     height: 1em;
     vertical-align: middle;

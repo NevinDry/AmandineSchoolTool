@@ -15,7 +15,11 @@ var multer = require('multer');
 
 var auth = jwt({secret: 'pinkfloydC', userProperty: 'payload'});
 
-var storage = multer.diskStorage({
+
+
+
+//UPLOAD ROUTES
+var storageEleve = multer.diskStorage({
       destination: function (req, file, cb) {
         cb(null, './public/uploads/eleves/')
     },
@@ -23,12 +27,26 @@ var storage = multer.diskStorage({
         cb(null, file.originalname)
   }
 });
-var uploadEleveImage = multer({ storage: storage });
+var uploadEleveImage = multer({ storage: storageEleve });
+
 
 router.post('/uploadImageEleve', uploadEleveImage.single('file'), function(req, res, next) {
-  console.log("Uploaded");
+  console.log("eleve Uploaded");
 });
 
+var storageSkill = multer.diskStorage({
+      destination: function (req, file, cb) {
+        cb(null, './public/uploads/skills/')
+    },
+    filename: function (req, file, cb) {
+        cb(null, req.skill._id+file.originalname)
+  }
+});
+var uploadSKillImage = multer({ storage: storageSkill });
+
+router.post('/uploadImageSkill/:skill', uploadSKillImage.single('file'), function(req, res, next) {
+  console.log("skill Uploaded");
+});
 //
 // AUTH ROUTES
 //
@@ -180,6 +198,12 @@ router.get('/eleves/:eleve/skill', function(req, res, next) {
 });
 
 
+router.get('/skills/:skill', function(req, res, next) {
+    res.json(req.skill);
+});
+
+
+
 router.post('/user/:user/eleves', auth, function(req, res, next) {
    var eleve = new Eleve(req.body);
    eleve.user = req.user;
@@ -214,6 +238,22 @@ router.post('/user/:user/eleves/:eleve/skill', auth, function(req, res, next) {
         });	
     });
   });
+});
+
+router.put('/skills/:skill', auth, function(req, res, next) {
+        var skill = req.skill;
+    
+        var firstStepPhoto = req.body.firstStepPhoto;
+        var secondStepPhoto = req.body.secondStepPhoto;
+        var thirdStepPhoto = req.body.thirdStepPhoto;
+        var fourthStepPhoto = req.body.fourthStepPhoto;
+    
+        skill.update({ firstStepPhoto: firstStepPhoto, secondStepPhoto: secondStepPhoto, thirdStepPhoto: thirdStepPhoto, fourthStepPhoto: fourthStepPhoto}, function() {
+              Skill.findById( req.skill._id, function ( err, skillUp ){
+                console.log(skillUp);  
+                res.json(skillUp);
+            });	
+        });	
 });
 
 
@@ -289,6 +329,32 @@ router.param('eleve', function(req, res, next, id) {
     if (!eleve) { return next(new Error('can\'t find eleve')); }
 
     req.eleve = eleve;
+    return next();
+  });
+});
+
+router.param('skill', function(req, res, next, id) {
+
+  var query = Skill.findById(id);
+    
+  query.exec(function (err, skill){
+    if (err) { return next(err); }
+    if (!skill) { return next(new Error('can\'t find skill')); }
+
+    req.skill = skill;
+    return next();
+  });
+});
+
+router.param('skill', function(req, res, next, id) {
+
+  var query = Skill.findById(id);
+    
+  query.exec(function (err, skill){
+    if (err) { return next(err); }
+    if (!skill) { return next(new Error('can\'t find skill')); }
+
+    req.skill = skill;
     return next();
   });
 });
