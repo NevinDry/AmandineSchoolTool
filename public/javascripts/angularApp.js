@@ -141,6 +141,11 @@ app.controller('EleveCtrl', [
         $scope.secondFileIsLoaded = false;
         $scope.thirdFileIsLoaded = false;
         $scope.fourthFileIsLoaded = false;
+        
+        //When the select value change, we need to update our skilltoshow value to retrieve elements
+        $scope.selectSkillToShow = function (){ 
+            $scope.skillToShow = this.skillToShow;
+        }
 
           
         $scope.uploadFirstStepPhoto = function (skill){ 
@@ -156,10 +161,11 @@ app.controller('EleveCtrl', [
                       //Once we added the image name to skill schema, we nee to upload this image
                       console.log("First STep Uploaded");
                       var uploadUrl = "/uploadImageSkill/"+skillUp.data._id;
-                      eleves.uploadSkillToServ(imageFirstStep, uploadUrl); 
-                      $scope.firstFileIsLoaded = false;
-                      $scope.skillToShow = skillUp.data;
-                   });
+                      eleves.uploadSkillToServ(imageFirstStep, uploadUrl).then(function() {
+                            this.firstFileIsLoaded = false;
+                            $scope.skillToShow.firstStepPhoto = skillUp.data.firstStepPhoto;
+                      });
+                });
             }
         };
         
@@ -177,16 +183,16 @@ app.controller('EleveCtrl', [
                       console.log("Second STep Uploaded");
                       //Once we added the image name to skill schema, we nee to upload this image
                       var uploadUrl = "/uploadImageSkill/"+skillUp.data._id;
-                      eleves.uploadSkillToServ(imageSecondStep, uploadUrl); 
-                      $scope.secondFileIsLoaded = false;
-                      $scope.skillToShow = skillUp.data;
-                   });
+                      eleves.uploadSkillToServ(imageSecondStep, uploadUrl).then(function() {
+                            $scope.secondFileIsLoaded = false;
+                            $scope.skillToShow.secondStepPhoto = skillUp.data.secondStepPhoto;
+                      });
+                });
             }
         };
         
          $scope.uploadThirdStepPhoto = function (){ 
             if($scope.thirdStepFileToUpload){ 
-                console.log(this.skillToShow);
                   var imageThirdStep = $scope.thirdStepFileToUpload;
                   eleves.addSkillImage({
                     firstStepPhoto: this.skillToShow.firstStepPhoto,
@@ -197,20 +203,11 @@ app.controller('EleveCtrl', [
                       //Once we added the image name to skill schema, we nee to upload this image
                       console.log("Third STep Uploaded");
                       var uploadUrl = "/uploadImageSkill/"+skillUp.data._id;
-                      eleves.uploadSkillToServ(imageThirdStep, uploadUrl); 
-                      $scope.thirdFileIsLoaded = false;
-                      eleves.get(skillUp.data.eleve).then(function(eleve){
-                      eleves.getAllSkill(eleve).then(function(skills){
-                          console.log("coucou");
-                          $scope.eleve.skills=skills.data;
-                          for(var skill in skills.data) {
-                              console.log(skill);
-                          }
-                              this.skillToShow = skills.data[0];
-                              $scope.skillToShow = this.skillToShow;
-                         });
-                       });
-                   });
+                      eleves.uploadSkillToServ(imageThirdStep, uploadUrl).then(function() {
+                            $scope.thirdFileIsLoaded = false;
+                            $scope.skillToShow.thirdStepPhoto = skillUp.data.thirdStepPhoto;
+                      });
+                });
             }
         };
         
@@ -226,12 +223,12 @@ app.controller('EleveCtrl', [
                     fourthStepPhoto: skill._id + imageFourthStep.name,                    
                    }, skill).then(function(skillUp) {
                       //Once we added the image name to skill schema, we nee to upload this image
-                     console.log("Fourth STep Uploaded");
-
+                      console.log("Fourth STep Uploaded");
                       var uploadUrl = "/uploadImageSkill/"+skillUp.data._id;
-                      eleves.uploadSkillToServ(imageFourthStep, uploadUrl); 
-                      $scope.fourthFileIsLoaded = false;
-                      $scope.skillToShow = skillUp.data;
+                      eleves.uploadSkillToServ(imageFourthStep, uploadUrl).then(function() {
+                            $scope.fourthFileIsLoaded = false;
+                            $scope.skillToShow.fourthStepPhoto = skillUp.data.fourthStepPhoto;
+                        });
                    });
             }
         };
@@ -637,17 +634,14 @@ app.factory('eleves', ['$http', 'auth', function($http, auth){
     
     
     e.uploadSkillToServ = function(file, uploadUrl){
-         var fd = new FormData();
-         fd.append('file', file);
-        $http.post(uploadUrl, fd, {
+        var fd = new FormData();
+        fd.append('file', file);
+        return $http.post(uploadUrl, fd, {
             transformRequest: angular.identity,
             headers: {'Content-Type': undefined}
+        }).success(function(res){
+            return res.data;
         })
-        .success(function(){
-            console.log("image skill uploaded");
-        })
-        .error(function(){
-        });
     }
     
     

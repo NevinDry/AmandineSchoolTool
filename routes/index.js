@@ -45,7 +45,8 @@ var storageSkill = multer.diskStorage({
 var uploadSKillImage = multer({ storage: storageSkill });
 
 router.post('/uploadImageSkill/:skill', uploadSKillImage.single('file'), function(req, res, next) {
-  console.log("skill Uploaded");
+    console.log("skill Uploaded");
+    res.json(req.skill);
 });
 //
 // AUTH ROUTES
@@ -250,7 +251,6 @@ router.put('/skills/:skill', auth, function(req, res, next) {
     
         skill.update({ firstStepPhoto: firstStepPhoto, secondStepPhoto: secondStepPhoto, thirdStepPhoto: thirdStepPhoto, fourthStepPhoto: fourthStepPhoto}, function() {
               Skill.findById( req.skill._id, function ( err, skillUp ){
-                console.log(skillUp);  
                 res.json(skillUp);
             });	
         });	

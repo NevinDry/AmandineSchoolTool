@@ -16,7 +16,7 @@
                         <span ng-show="firstFileIsLoaded" class="iconPhoto" >Reprendre Photo</span>
                         <span ng-show="!firstFileIsLoaded" class="iconPhoto">Prendre Photo</span>
                     </label>
-                    <button type="button" ng-show="firstFileIsLoaded" ng-click="uploadFirstStepPhoto(skillToShow)" class="btn btn-warning">Ajouter la photo</button>
+                    <button type="button" ng-show="firstFileIsLoaded" ng-click="uploadFirstStepPhoto(skillToShow);firstFileIsLoaded=false" class="btn btn-warning">Ajouter la photo</button>
                 </div>
                 
                 <div ng-show="skillToShow.firstStepPhoto !='defaut'">
@@ -24,7 +24,7 @@
                     <label ng-click="firstFileIsLoaded=true"  for="file">
                         <span class="glyphicon glyphicon-camera iconPhotoSkillImage" aria-hidden="true"></span>
                     </label>
-                    <span style="color:rgb(220, 165, 37);" ng-show="firstFileIsLoaded" ng-click="uploadFirstStepPhoto(skillToShow)" class="glyphicon glyphicon-open iconPhotoSkillImage" aria-hidden="true"></span>
+                    <span style="color:rgb(220, 165, 37);" ng-show="firstFileIsLoaded" ng-click="uploadFirstStepPhoto(skillToShow);firstFileIsLoaded=false" class="glyphicon glyphicon-open iconPhotoSkillImage" aria-hidden="true"></span>
                 </div>
      
                  <h4 class="skillTitle" >{{skillToShow.firstStep}}</h3>
@@ -39,14 +39,14 @@
                         <span ng-show="secondFileIsLoaded" class="iconPhoto" >Reprendre Photo</span>
                         <span ng-show="!secondFileIsLoaded" class="iconPhoto" >Prendre Photo</span>
                     </label>
-                    <button type="button" ng-show="secondFileIsLoaded"  ng-click="uploadSecondtStepPhoto(skillToShow)" class="btn btn-warning">Ajouter la photo</button>
+                    <button type="button" ng-show="secondFileIsLoaded"  ng-click="uploadSecondtStepPhoto(skillToShow);secondFileIsLoaded=false" class="btn btn-warning">Ajouter la photo</button>
                 </div>
                  <div ng-show="skillToShow.secondStepPhoto !='defaut'">
                     <img  class="imageSkill" src="/uploads/skills/{{skillToShow.secondStepPhoto}}">
                     <label ng-click="secondFileIsLoaded=true"  for="file2">
                         <span class="glyphicon glyphicon-camera iconPhotoSkillImage" aria-hidden="true"></span>
                     </label>
-                    <span style="color:rgb(220, 165, 37);" ng-show="secondFileIsLoaded" ng-click="uploadSecondtStepPhoto(skillToShow)" class="glyphicon glyphicon-open iconPhotoSkillImage" aria-hidden="true"></span>
+                    <span style="color:rgb(220, 165, 37);" ng-show="secondFileIsLoaded" ng-click="uploadSecondtStepPhoto(skillToShow);secondFileIsLoaded=false" class="glyphicon glyphicon-open iconPhotoSkillImage" aria-hidden="true"></span>
                 </div>
                 <h4>{{skillToShow.secondStep}}</h3>        
             </div>
@@ -67,7 +67,7 @@
                     <label ng-click="thirdFileIsLoaded=true"  for="file3">
                         <span class="glyphicon glyphicon-camera iconPhotoSkillImage" aria-hidden="true"></span>
                     </label>
-                    <span style="color:rgb(220, 165, 37);" ng-show="thirdFileIsLoaded" ng-click="uploadThirdStepPhoto()" class="glyphicon glyphicon-open iconPhotoSkillImage" aria-hidden="true"></span>
+                    <span style="color:rgb(220, 165, 37);" ng-show="thirdFileIsLoaded" ng-click="uploadThirdStepPhoto();thirdFileIsLoaded=false" class="glyphicon glyphicon-open iconPhotoSkillImage" aria-hidden="true"></span>
                 </div>
                 <h4>{{skillToShow.thirdStep}}</h3>
             </div>
@@ -80,7 +80,7 @@
                         <span ng-show="fourthFileIsLoaded" class="iconPhoto" >Reprendre Photo</span>
                         <span ng-show="!fourthFileIsLoaded" class="iconPhoto" >Prendre Photo</span>
                     </label>
-                        <button type="button" ng-show="fourthFileIsLoaded"  ng-click="uploadFourthStepPhoto(skillToShow)" class="btn btn-warning">Ajouter la photo</button>
+                        <button type="button" ng-show="fourthFileIsLoaded"  ng-click="uploadFourthStepPhoto(skillToShow);fourthFileIsLoaded=false" class="btn btn-warning">Ajouter la photo</button>
                 </div>
                 
                 <div ng-show="skillToShow.fourthStepPhoto !='defaut'">
@@ -88,7 +88,7 @@
                     <label ng-click="fourthFileIsLoaded=true"  for="file4">
                         <span class="glyphicon glyphicon-camera iconPhotoSkillImage" aria-hidden="true"></span>
                     </label>
-                    <span style="color:rgb(220, 165, 37);" ng-show="fourthFileIsLoaded" ng-click="uploadFourthStepPhoto(skillToShow)" class="glyphicon glyphicon-open iconPhotoSkillImage" aria-hidden="true"></span>
+                    <span style="color:rgb(220, 165, 37);" ng-show="fourthFileIsLoaded" ng-click="uploadFourthStepPhoto(skillToShow);fourthFileIsLoaded=false" class="glyphicon glyphicon-open iconPhotoSkillImage" aria-hidden="true"></span>
                 </div>
                 <h4>{{skillToShow.fourthStep}}</h3>
             </div>
