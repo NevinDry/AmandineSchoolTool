@@ -18,6 +18,12 @@ app.config([
               controller:'EleveCtrl',
         });
         
+        $stateProvider.state('eleverecap', {
+              url:'/eleverecap/{id}',
+              templateUrl:'/eleverecap.html',
+              controller:'EleveRecapCtrl',
+        });
+        
        $stateProvider.state('login', {
           url: '/login',
           templateUrl: '/login.html',
@@ -257,13 +263,54 @@ app.controller('MainCtrl', [
         }  
 }]);
 
+app.controller('EleveRecapCtrl', [
+    '$scope',
+    '$stateParams',
+    'auth',
+    'eleves',
+    function($scope, $stateParams, auth, eleves){
+        
+        $scope.lastEtapeSuccedPhoto = {};
+        $scope.lastEtapeSuccedTitle = {};
+        
+        eleves.get($stateParams.id).then(function(eleve){
+            //retrieve the current eleve 
+            $scope.eleve = eleve;
+            //retrieve all his skills
+             eleves.getAllSkill(eleve).then(function(skills){
+                 $scope.eleve.skills=skills.data;
+                 
+                  for(var skill in skills.data) { 
+                    var currentSKill = skills.data[skill]; 
+                    if(currentSKill.fourthStepPhoto != 'defaut'){
+                        $scope.lastEtapeSuccedPhoto[skill] = currentSKill.fourthStepPhoto;
+                        $scope.lastEtapeSuccedTitle[skill] = currentSKill.fourthStep;
+                    }else if(currentSKill.thirdStepPhoto != 'defaut'){
+                        $scope.lastEtapeSuccedPhoto[skill] = currentSKill.thirdStepPhoto;
+                        $scope.lastEtapeSuccedTitle[skill] = currentSKill.thirdStep;
+                    }else if(currentSKill.secondStepPhoto != 'defaut'){
+                        $scope.lastEtapeSuccedPhoto[skill] = currentSKill.secondStepPhoto;
+                        $scope.lastEtapeSuccedTitle[skill] = currentSKill.secondStep;
+                    }else{
+                        $scope.lastEtapeSuccedPhoto[skill] = currentSKill.firstStepPhoto;
+                        $scope.lastEtapeSuccedTitle[skill] = currentSKill.firstStep;
+                    }    
+                }
+             });
+        });
+        
+       
+   
+}]);
+
 
 app.controller('ManageCtrl', [
 '$scope',
 'auth',   
 'eleves',
-'skillpaterns',    
-    function($scope, auth, eleves, skillpaterns){
+'skillpaterns', 
+'$state',    
+    function($scope, auth, eleves, skillpaterns, $state){
         
         
         //Get all data we need to display view
@@ -382,6 +429,12 @@ app.controller('ManageCtrl', [
         
         
         //Eleves functions create/edit/delete
+        
+        $scope.eleveViewRecap = function(eleve){
+            $state.go('eleverecap',  {id :eleve._id});
+        }  
+        
+        
         $scope.addEleve = function(){
           if(!$scope.lastname || !$scope.firstname || !$scope.imageEleve) { return; }
           //Getting image file (gor the name and then for the upload)  

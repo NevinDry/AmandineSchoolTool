@@ -122,3 +122,32 @@
     margin-right: 0.25em;
 }
 
+.recapTitle {
+    text-align: center;
+}
+
+.recapSkills{
+    width: 90%;
+    margin-top: 5%;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: justify;
+}
+
+.divImageHightlight{
+    margin-top: 20px;
+    margin: auto;
+    width: 30%;
+    height: 30%;
+}
+
+.imageSkillHightlight{
+    width: 100%;
+    height: 100%;
+}
+
+.titleSkillHightlight{
+    margin-top: 20px;
+    text-align: center;
+    font-weight: bold;
+}

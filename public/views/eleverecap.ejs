@@ -1,0 +1,10 @@
+<div>
+    <h1 class="recapTitle">{{eleve.firstname}} {{eleve.firstname}}</h1>
+    <div ng-repeat="skill in eleve.skills">
+        <h3 class="recapSkills">Compétence : {{skill.officialTitle}}</h3>
+            <div class="divImageHightlight">
+                <img class="imageSkillHightlight" src="/uploads/skills/{{lastEtapeSuccedPhoto[$index]}}">
+            </div>
+            <div class="titleSkillHightlight">{{lastEtapeSuccedTitle[$index]}}</div>
+    </div>
+</div>
