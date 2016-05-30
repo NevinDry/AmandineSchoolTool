@@ -1,4 +1,5 @@
-    
+
+
    <div  ng-show="isLoggedIn()">
       <form ng-show="!showModSkillPatern" ng-submit="addSkillPatern()" class="addSkillForm" >
         <h3>Ajouter une compétence</h3>
@@ -91,11 +92,9 @@
 
     
    
-   <div ng-hide="isLoggedIn()">
-      <h3>You need to <a href="/#/login">Log In</a> or <a href="/#/register">Register</a> before you can Manage.</h3>
-    </div>
+
     
-    <table class="table table-striped">
+    <table  ng-show="isLoggedIn()" class="table table-striped">
     <tr ng-repeat="skillpatern in user.skillpaterns">
       <td style="width: 80%;">
         {{skillpatern.title}}
