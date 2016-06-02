@@ -133,11 +133,11 @@ app.controller('ManageCtrl', [
           if(!$scope.lastname || !$scope.firstname || !$scope.imageEleve) { return; }
           //Getting image file (gor the name and then for the upload)  
           var imageEleve = $scope.imageEleve; 
-            
+          var skillImageName = new Date().getTime() / 1000;    
           eleves.create({
             lastname: $scope.lastname,
             firstname: $scope.firstname,
-            trombi: $scope.imageEleve.name,
+            trombi: skillImageName,
            }).success(function() {
               
               //We need to create skills from each selected skillpaterns
@@ -167,7 +167,7 @@ app.controller('ManageCtrl', [
               }
               
               //Now we need to upload the image file to the server
-              var uploadUrl = "/uploadImageEleve";
+              var uploadUrl = "/uploadImageEleve/"+skillImageName;
               eleves.uploadEleveToServ(imageEleve, uploadUrl);
               
              //Uncheking boxes, update scope eleves 
@@ -183,20 +183,20 @@ app.controller('ManageCtrl', [
         };
         
         $scope.editEleve = function(eleveToEdit){
-              if(!$scope.lastname || !$scope.firstname) { return; }
+            if(!$scope.lastname || !$scope.firstname) { return; }
               
             //checking and managing image 
-            var imageEleve;
-            if($scope.imageEleve){
-                  imageEleve = $scope.imageEleve; 
+            var imageEleveMod;
+            var skillImageName;
+            if($scope.imageEleveMod){
+                  skillImageName = new Date().getTime() / 1000;  
              }else{
-                 imageEleve = $scope.eleveToEdit.trombi;
+                 skillImageName = $scope.eleveToEdit.trombi;
              }
-            console.log("imageeleve"+imageEleve);
               eleves.edit({
                 lastname: $scope.lastname,
                 firstname: $scope.firstname,
-                trombi: imageEleve.name,
+                trombi: skillImageName,
                }, eleveToEdit).success(function() {
                   var skillToAddToEleve = angular.fromJson($scope.skillpaternCheckBox);
                   for(skillId in skillToAddToEleve)
@@ -222,7 +222,7 @@ app.controller('ManageCtrl', [
                   }
                   //If user as selected an image, we need to upload it
                   if($scope.imageEleveMod){
-                      var uploadUrl = "/uploadImageEleve";
+                      var uploadUrl = "/uploadImageEleve/"+skillImageName;;
                       eleves.uploadEleveToServ($scope.imageEleveMod, uploadUrl); 
                   }
                  $scope.user.eleves = eleves.eleves;

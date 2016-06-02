@@ -57,10 +57,10 @@
   </script>
   
   <script type="text/ng-template" id="/eleve.html">
-    <div style="text-align: center;" ng-hide="isLoggedIn()">
+    <div style="text-align: center;" ng-show="isLoggedIn()">
       <h3>Vous devez vous <a href="/#/login">connecter</a> ou vous <a href="/#/register">Inscrire</a> avant d'utiliser l'application.</h3>
     </div>
-    <div ng-show="isLoggedIn()" ng-include src="'/views/main.ejs'"></div>
+    <div ng-hide="isLoggedIn()" ng-include src="'/views/main.ejs'"></div>
   </script>
     
   <script type="text/ng-template" id="/eleverecap.html">

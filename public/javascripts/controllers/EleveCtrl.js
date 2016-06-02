@@ -33,17 +33,16 @@ app.controller('EleveCtrl', [
           
         $scope.uploadFirstStepPhoto = function (skill){ 
             if($scope.firstStepFileToUpload){
-
                   var imageFirstStep = $scope.firstStepFileToUpload;
                   eleves.addSkillImage({
-                    firstStepPhoto: skill._id + imageFirstStep.name,
+                    firstStepPhoto: skill._id + new Date().getTime() / 1000,
                     secondStepPhoto: skill.secondStepPhoto,
                     thirdStepPhoto: skill.thirdStepPhoto,
                     fourthStepPhoto: skill.fourthStepPhoto,                    
                    }, skill).then(function(skillUp) {
                       //Once we added the image name to skill schema, we nee to upload this image
                       console.log("First STep Uploaded");
-                      var uploadUrl = "/uploadImageSkill/"+skillUp.data._id;
+                      var uploadUrl = "/uploadImageSkill/"+skillUp.data.firstStepPhoto;
                       eleves.uploadSkillToServ(imageFirstStep, uploadUrl).then(function() {
                             this.firstFileIsLoaded = false;
                             $scope.skillToShow.firstStepPhoto = skillUp.data.firstStepPhoto;
@@ -59,13 +58,13 @@ app.controller('EleveCtrl', [
                 
                   eleves.addSkillImage({
                     firstStepPhoto: skill.firstStepPhoto,
-                    secondStepPhoto: skill._id + imageSecondStep.name,
+                    secondStepPhoto: skill._id + new Date().getTime() / 1000,
                     thirdStepPhoto: skill.thirdStepPhoto,
                     fourthStepPhoto: skill.fourthStepPhoto,                    
                    }, skill).then(function(skillUp) {
                       console.log("Second STep Uploaded");
                       //Once we added the image name to skill schema, we nee to upload this image
-                      var uploadUrl = "/uploadImageSkill/"+skillUp.data._id;
+                      var uploadUrl = "/uploadImageSkill/"+skillUp.data.secondStepPhoto;
                       eleves.uploadSkillToServ(imageSecondStep, uploadUrl).then(function() {
                             $scope.secondFileIsLoaded = false;
                             $scope.skillToShow.secondStepPhoto = skillUp.data.secondStepPhoto;
@@ -80,12 +79,12 @@ app.controller('EleveCtrl', [
                   eleves.addSkillImage({
                     firstStepPhoto: this.skillToShow.firstStepPhoto,
                     secondStepPhoto: this.skillToShow.secondStepPhoto,
-                    thirdStepPhoto: this.skillToShow._id + imageThirdStep.name,
+                    thirdStepPhoto: this.skillToShow._id + new Date().getTime() / 1000,
                     fourthStepPhoto: this.skillToShow.fourthStepPhoto,                    
                    }, this.skillToShow).then(function(skillUp) {
                       //Once we added the image name to skill schema, we nee to upload this image
                       console.log("Third STep Uploaded");
-                      var uploadUrl = "/uploadImageSkill/"+skillUp.data._id;
+                      var uploadUrl = "/uploadImageSkill/"+skillUp.data.thirdStepPhoto;
                       eleves.uploadSkillToServ(imageThirdStep, uploadUrl).then(function() {
                             $scope.thirdFileIsLoaded = false;
                             $scope.skillToShow.thirdStepPhoto = skillUp.data.thirdStepPhoto;
@@ -103,11 +102,11 @@ app.controller('EleveCtrl', [
                     firstStepPhoto: skill.firstStepPhoto,
                     secondStepPhoto: skill.secondStepPhoto,
                     thirdStepPhoto: skill.thirdStepPhoto,
-                    fourthStepPhoto: skill._id + imageFourthStep.name,                    
+                    fourthStepPhoto: skill._id + new Date().getTime() / 1000,                    
                    }, skill).then(function(skillUp) {
                       //Once we added the image name to skill schema, we nee to upload this image
                       console.log("Fourth STep Uploaded");
-                      var uploadUrl = "/uploadImageSkill/"+skillUp.data._id;
+                      var uploadUrl = "/uploadImageSkill/"+skillUp.data.fourthStepPhoto;
                       eleves.uploadSkillToServ(imageFourthStep, uploadUrl).then(function() {
                             $scope.fourthFileIsLoaded = false;
                             $scope.skillToShow.fourthStepPhoto = skillUp.data.fourthStepPhoto;

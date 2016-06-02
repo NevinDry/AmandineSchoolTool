@@ -24,13 +24,13 @@ var storageEleve = multer.diskStorage({
         cb(null, './public/uploads/eleves/')
     },
     filename: function (req, file, cb) {
-        cb(null, file.originalname)
+        cb(null, req.skillImageName)
   }
 });
 var uploadEleveImage = multer({ storage: storageEleve });
 
 
-router.post('/uploadImageEleve', uploadEleveImage.single('file'), function(req, res, next) {
+router.post('/uploadImageEleve/:skillImageName', uploadEleveImage.single('file'), function(req, res, next) {
   console.log("eleve Uploaded");
 });
 
@@ -39,12 +39,12 @@ var storageSkill = multer.diskStorage({
         cb(null, './public/uploads/skills/')
     },
     filename: function (req, file, cb) {
-        cb(null, req.skill._id+file.originalname)
+        cb(null, req.skillImageName)
   }
 });
 var uploadSKillImage = multer({ storage: storageSkill });
 
-router.post('/uploadImageSkill/:skill', uploadSKillImage.single('file'), function(req, res, next) {
+router.post('/uploadImageSkill/:skillImageName', uploadSKillImage.single('file'), function(req, res, next) {
     console.log("skill Uploaded");
     res.json(req.skill);
 });
@@ -357,6 +357,12 @@ router.param('skill', function(req, res, next, id) {
     req.skill = skill;
     return next();
   });
+});
+
+router.param('skillImageName', function(req, res, next, skillImageName) {
+    console.log(skillImageName);
+    req.skillImageName = skillImageName;
+    return next();
 });
 
 
