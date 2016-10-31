@@ -1,0 +1,58 @@
+Deploy on serv :
+
+Install node, mongodb, forever on your server.
+Copy/Paste your repository in the folder you want.
+Add the following line in your app.js :
+
+app.listen(8080);  //you can use the port you want, but it have to be activated on your serv, in my case 3000 wasnt activated
+
+Run mongo on your server.
+Use npm start to launch your node app.
+
+You should ne able to access your app, it's now running on your server.
+
+Database security :
+
+In mongo command line, process the following (replace user and password) :
+
+use admin
+db.createUser(
+  {
+    user: "myUserAdmin",
+    pwd: "blablabla",
+    roles: [ { role: "userAdminAnyDatabase", db: "admin" } ]
+  }
+)
+
+Now stop mongodb, and start it with the following command :
+mongo --port 27017 -u "myUserAdmin" -p "blablabla" --authenticationDatabase "admin"
+
+Create a new User/Password for the amandine DB :
+use amandine
+db.createUser(
+  {
+    user: "amandineAdminUser",
+    pwd: "blablabla",
+    roles: [ { role: "readWrite", db: "amandine" } ]
+  }
+)
+
+The last thing is to change the connectionstring in our app.js :
+var options = {
+  user: 'amandineAdminUser',
+  pass: '8zt@A{t333c$DZ'
+}
+
+var MongoDB = mongoose.connect(mongoURI, options).connection;
+
+Now restart mongodb with the command : mongod --auth
+The database security is done.
+
+If you want your app to run everytime/forever :
+launch the db as deamon :
+mongod --fork --auth --logpath /var/log/mongodb.log
+
+launch node as daemon :
+forever start -c "npm start" ./
+
+https://github.com/foreverjs/forever/issues/540
